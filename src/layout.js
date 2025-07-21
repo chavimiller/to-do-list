@@ -17,6 +17,7 @@ let menuHeader;
 let allListsContainer;
 let activeList = general;
 let addList;
+let checkBox;
 
 export function layout() {
     content = document.querySelector("#content");
@@ -59,14 +60,29 @@ export function renderActiveListTitle() {
     let activeListTitle = document.createElement("div");
     activeListTitle.classList.add("active-list-title");
     activeListTitle.textContent = activeList.listName;
-    mainHeaderBar.appendChild(activeListTitle);    
+    mainHeaderBar.appendChild(activeListTitle);
 }
 
-export function renderActiveListItems() {
-    activeList.map((item, index) => {
+export function renderNewListItem(item) {
+    activeList.listItems.map((item, index) => {
+
         let showTask = document.createElement("div");
-        showTask.textContent = item.title;
-        mainContent.appendChild(showTask);
+        showTask.classList.add("task-element");
+
+        let taskTitle = document.createElement("div");
+        taskTitle.classList.add("task-title");
+
+        checkBox = document.createElement("div");
+        checkBox.classList.add("task-checkbox");
+        taskTitle.textContent = item.title;
+        
+        if (taskTitle.textContent === "") {
+            return; 
+        } else {
+        taskArea.insertBefore(showTask, taskArea.firstChild);
+        showTask.appendChild(checkBox);
+        showTask.appendChild(taskTitle);
+        }
     })
 }
 
@@ -76,9 +92,11 @@ export function addNewTask() {
     newTask.textContent = "+ New Item";
     taskArea.appendChild(newTask);
     newTask.addEventListener("click", () => {
+        newTask.style.display = "none";
+
         let taskInputForm = document.createElement("form"); 
         taskInputForm.classList.add("task-input-form");
-        taskArea.appendChild(taskInputForm);
+        document.body.appendChild(taskInputForm);
 
         let taskInputTitle = document.createElement("input");
         taskInputTitle.id = 'task-input-title';
@@ -129,14 +147,19 @@ export function addNewTask() {
         taskInputForm.appendChild(taskSubmitButton);
         taskSubmitButton.addEventListener("click", (e) => {
             e.preventDefault();
+            newTask.style.display = "block";
             let makeTask = new toDoItem(taskInputTitle.value, taskInputDescr.value, taskInputDue.value, taskInputPriority.value, taskInputAssignList.value);
             const list = masterList.find((choice) =>
                 choice.listName === taskInputAssignList.value)
             if (list) {
                 list.addItem(makeTask);
+                renderNewListItem()
             } else {
                 general.addItem(makeTask);
+                renderNewListItem()
             }
+            
+            taskInputForm.remove()
         })
     })
 }
@@ -149,3 +172,18 @@ export function showMasterList() {
     })
     
 }
+
+export function addNewList() {
+    let newListButton = document.createElement("div");
+    newListButton.classList.add("new-list-button");
+    newListButton.textContent = "+ New List";
+    menuSideBar.appendChild(newListButton);
+}
+
+/* Toggle not working
+export function markCheckBox() {
+    checkBox.addEventListener("click", () => {
+        checkBox.classList.add("task-checkbox-toggle");
+    })
+}
+*/

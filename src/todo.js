@@ -9,7 +9,7 @@ export class toDoItem {
             this.project = project;
             this.complete = false;
         } 
-
+        
         toggleComplete() {
             this.complete = !this.complete;
         }

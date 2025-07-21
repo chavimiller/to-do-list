@@ -17,7 +17,5 @@ addProject(general)
 export const vacation = new project("Vacation in Vietnam");
 addProject(vacation)
 
-export const dishes = new toDoItem("Dishes", "Clean all dishes in the sink", "today" )
-general.addItem(dishes)
 
 
