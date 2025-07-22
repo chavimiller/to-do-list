@@ -101,6 +101,9 @@ export function renderNewListItem(item) {
     let showTask = document.createElement("div");
     showTask.classList.add("task-element");
 
+    let mainTaskLine = document.createElement("div");
+    mainTaskLine.classList.add("main-task-line");
+
     let taskTitle = document.createElement("div");
     taskTitle.classList.add("task-title");
     taskTitle.textContent = item.title;
@@ -110,7 +113,7 @@ export function renderNewListItem(item) {
     listItemDetail.classList.add("task-detail-elipsis")
 
     listItemDetail.addEventListener("click", () => {
-        showTaskDetail(item, showTask)
+        showTaskDetail(item, showTask);
     })
 
     let matchedPriority = options.find(option => option.label === item.priority);
@@ -131,10 +134,11 @@ export function renderNewListItem(item) {
     } else {
         if (item.project === activeList.listName) {
         taskArea.insertBefore(showTask, taskArea.firstChild);
-        showTask.appendChild(checkBox);
-        showTask.appendChild(taskTitle);
-        showTask.appendChild(taskPriority)
-        showTask.appendChild(listItemDetail)
+        showTask.appendChild(mainTaskLine);
+        mainTaskLine.appendChild(checkBox);
+        mainTaskLine.appendChild(taskTitle);
+        mainTaskLine.appendChild(taskPriority)
+        mainTaskLine.appendChild(listItemDetail)
         } else {
             return;
         }
@@ -303,14 +307,16 @@ export function showTaskDetail(task, element) {
 
     let taskDueDate = document.createElement("div");
     taskDueDate.classList.add("task-duedate-dropdown");
-    taskDueDate.textContent = `${formatDateInput(task.dueDate)}`
+    taskDueDate.textContent = `Due: ${formatDateInput(task.dueDate)}`
+
+    let deleteTaskButton = document.createElement("div");
+    deleteTaskButton.classList.add("delete-task-button");
+    deleteTaskButton.textContent = "Delete Task"
 
     element.appendChild(taskDropDown);
     taskDropDown.append(taskDescr);
     taskDropDown.append(taskDueDate);
-    console.log(task.dueDate)
-    console.log(formatDateInput(task.dueDate))
-    
+    taskDropDown.append(deleteTaskButton);
 }
 
 
