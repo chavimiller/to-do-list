@@ -63,8 +63,28 @@ export function layout() {
 }
 
 export function switchActiveList() {
-    
-}
+    const renderedLists = document.querySelectorAll(".menu-list-names");
+    renderedLists.forEach((listElement) => {
+        listElement.addEventListener("click", () => {
+            const selectedList = masterList.find(
+                (list) => list.listName === listElement.textContent
+            )
+            if (selectedList) {
+                activeList = selectedList;
+                console.log(activeList);
+
+                mainHeaderBar.innerHTML = '';
+                taskArea.innerHTML = '';
+
+                renderActiveListTitle();
+
+                activeList.listItems.forEach((item) => {
+                    renderNewListItem(item);
+                })
+            }
+        })
+    } 
+)}
 
 export function renderActiveListTitle() {
     let activeListTitle = document.createElement("div");
@@ -108,7 +128,7 @@ export function addNewTask() {
     let newTask = document.createElement("div");
     newTask.classList.add("new-task-button");
     newTask.textContent = "+ New Item";
-    taskArea.appendChild(newTask);
+    mainContent.appendChild(newTask);
     newTask.addEventListener("click", () => {
         newTask.style.display = "none";
 
@@ -182,6 +202,7 @@ export function showMasterList() {
     masterList.map((list, index) => {
         addList = document.createElement("div");
         addList.textContent = list.listName;
+        addList.classList.add("menu-list-names");
         allListsContainer.appendChild(addList);
     })
 }
@@ -190,8 +211,20 @@ export function renderNewAddedList(list) {
     addList = document.createElement("div");
     addList.textContent = list.listName;
     addList.classList.add("menu-list-names");
-    //Fix this next
     allListsContainer.appendChild(addList);
+
+    addList.addEventListener("click", () => {
+        activeList = list;
+        mainHeaderBar.innerHTML = '';
+        taskArea.innerHTML = '';
+
+        renderActiveListTitle();
+
+        activeList.listItems.forEach((item) => {
+            renderNewListItem(item);
+        })
+
+    })
 }
 
 export function addNewList() {
