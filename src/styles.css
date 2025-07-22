@@ -159,10 +159,7 @@ option {
     width: 260px;
     margin: 20px 0 0 70px;
     gap: 4px; 
-}
-
-.menu-list-names {
-    font-size: 30px;
+    font-size: 24px;
     font-weight: 300;
 }
 
