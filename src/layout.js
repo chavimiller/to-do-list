@@ -109,18 +109,22 @@ export function renderNewListItem(item) {
 
     checkBox = document.createElement("div");
     checkBox.classList.add("task-checkbox");
+    checkBox.addEventListener("click", () => {
+        markCheckBox(checkBox, taskTitle)
+    })
+
     
     if (taskTitle.textContent === "") {
         return; 
     } else {
-    if (item.project === activeList.listName) {
-    taskArea.insertBefore(showTask, taskArea.firstChild);
-    showTask.appendChild(checkBox);
-    showTask.appendChild(taskTitle);
-    showTask.appendChild(taskPriority)
-    } else {
-        return;
-    }
+        if (item.project === activeList.listName) {
+        taskArea.insertBefore(showTask, taskArea.firstChild);
+        showTask.appendChild(checkBox);
+        showTask.appendChild(taskTitle);
+        showTask.appendChild(taskPriority)
+        } else {
+            return;
+        }
     }
 }
 
@@ -270,10 +274,9 @@ export function addNewList() {
     })
 }
 
-/* Toggle not working
-export function markCheckBox() {
-    checkBox.addEventListener("click", () => {
-        checkBox.classList.add("task-checkbox-toggle");
-    })
+export function markCheckBox(box, title) {
+    box.classList.toggle("task-checkbox-toggle");
+    title.classList.toggle("checked-task-title");
+
+
 }
-*/
