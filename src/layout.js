@@ -113,7 +113,7 @@ export function renderNewListItem(item) {
     listItemDetail.classList.add("task-detail-elipsis")
 
     listItemDetail.addEventListener("click", () => {
-        showTaskDetail(item, showTask);
+       toggleTaskDetail(item, showTask);
     })
 
     let matchedPriority = options.find(option => option.label === item.priority);
@@ -311,7 +311,7 @@ export function showTaskDetail(task, element) {
 
     let deleteTaskButton = document.createElement("div");
     deleteTaskButton.classList.add("delete-task-button");
-    deleteTaskButton.textContent = "Delete Task"
+    deleteTaskButton.textContent = "Delete Task";
 
     element.appendChild(taskDropDown);
     taskDropDown.append(taskDescr);
@@ -319,6 +319,14 @@ export function showTaskDetail(task, element) {
     taskDropDown.append(deleteTaskButton);
 }
 
+export function toggleTaskDetail(task, parentElement) {
+    const existingDropdown = parentElement.querySelector(".task-drop-down");
+    if(existingDropdown) {
+        existingDropdown.remove()
+    } else {
+        showTaskDetail(task, parentElement);
+    }
+}
 
 export function formatDateInput(dateInput) {
     return format(new Date(dateInput), 'EEE, MMMM d, yyyy');
