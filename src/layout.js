@@ -4,8 +4,9 @@ import MedPriority from './MedPriority.svg'
 import HighPriority from './HighPriority.svg'
 import { masterList, general, vacation, addProject } from "./projectManager";
 import { toDoItem } from "./todo";
-import { formatDistance, subDays } from "date-fns";
+import { formatDate, formatDistance, subDays } from "date-fns";
 import { project } from "./project";
+import { format } from "date-fns";
 
 let content;
 let contentGrid;
@@ -15,6 +16,7 @@ let mainHeaderBar;
 let taskArea;
 let bookmarkSVG;
 let menuHeader;
+let listItemDetail;
 let allListsContainer;
 let activeList = general;
 let addList;
@@ -24,6 +26,7 @@ const options = [
             {label: "Medium", symbol: "🔵"},
             {label: "High", symbol: "🔴"}
         ];
+
 
 export function layout() {
     content = document.querySelector("#content");
@@ -65,6 +68,7 @@ export function layout() {
 export function switchActiveList() {
     const renderedLists = document.querySelectorAll(".menu-list-names");
     renderedLists.forEach((listElement) => {
+        listElement.classList.add("list-name-hover");
         listElement.addEventListener("click", () => {
             const selectedList = masterList.find(
                 (list) => list.listName === listElement.textContent
@@ -101,6 +105,14 @@ export function renderNewListItem(item) {
     taskTitle.classList.add("task-title");
     taskTitle.textContent = item.title;
 
+    listItemDetail = document.createElement("div");
+    listItemDetail.textContent = "...";
+    listItemDetail.classList.add("task-detail-elipsis")
+
+    listItemDetail.addEventListener("click", () => {
+        showTaskDetail(item, showTask)
+    })
+
     let matchedPriority = options.find(option => option.label === item.priority);
 
     let taskPriority = document.createElement("div");
@@ -110,7 +122,7 @@ export function renderNewListItem(item) {
     checkBox = document.createElement("div");
     checkBox.classList.add("task-checkbox");
     checkBox.addEventListener("click", () => {
-        markCheckBox(checkBox, taskTitle)
+        markCheckBox(checkBox, showTask)
     })
 
     
@@ -122,6 +134,7 @@ export function renderNewListItem(item) {
         showTask.appendChild(checkBox);
         showTask.appendChild(taskTitle);
         showTask.appendChild(taskPriority)
+        showTask.appendChild(listItemDetail)
         } else {
             return;
         }
@@ -153,6 +166,7 @@ export function addNewTask() {
 
         let taskInputDue = document.createElement("input");
         taskInputDue.id = 'task-input-duedate';
+        taskInputDue.type = 'date';
         taskInputDue.placeholder = 'Due Date';
         taskInputForm.appendChild(taskInputDue);
 
@@ -277,6 +291,29 @@ export function addNewList() {
 export function markCheckBox(box, title) {
     box.classList.toggle("task-checkbox-toggle");
     title.classList.toggle("checked-task-title");
+}
+
+export function showTaskDetail(task, element) { 
+    let taskDropDown = document.createElement("div");
+    taskDropDown.classList.add("task-drop-down")
+
+    let taskDescr = document.createElement("div");
+    taskDescr.classList.add("task-description-dropdown");
+    taskDescr.textContent = task.description;
+
+    let taskDueDate = document.createElement("div");
+    taskDueDate.classList.add("task-duedate-dropdown");
+    taskDueDate.textContent = `${formatDateInput(task.dueDate)}`
+
+    element.appendChild(taskDropDown);
+    taskDropDown.append(taskDescr);
+    taskDropDown.append(taskDueDate);
+    console.log(task.dueDate)
+    console.log(formatDateInput(task.dueDate))
+    
+}
 
 
+export function formatDateInput(dateInput) {
+    return format(new Date(dateInput), 'EEE, MMMM d, yyyy');
 }

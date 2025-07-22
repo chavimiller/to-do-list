@@ -74,6 +74,7 @@
     font-size: 30px;
     font-weight: 300;
     margin-left: 150px;
+    user-select: none;
 }
 
 img {
@@ -98,7 +99,7 @@ img {
     left: 400px;
 }
 
-.task-input-form > input, button {
+.task-input-form > input, button, textarea {
     font-size: 16px;
     padding: 6px 10px;
     background-color: var(--primary);    
@@ -107,7 +108,7 @@ img {
     color: var(--text);
 }
 
-.task-input-form > input {
+.task-input-form > input, textarea {
     margin-right: 8px;
     width: 782px;
     height: 20px;
@@ -118,6 +119,10 @@ img {
     cursor: pointer;
     width: 50px;
     height: 30px;
+}
+
+#task-input-duedate {
+    width: 130px;
 }
 
 select {
@@ -160,6 +165,12 @@ option {
     width: 260px;
     margin: 20px 0 0 70px;
     gap: 4px; 
+    
+}
+
+.list-name-hover {
+    cursor: pointer;
+    width: fit-content;
 }
 
 .menu-list-names {
@@ -173,6 +184,7 @@ option {
     font-size: 30px;
     font-weight: 600;
     background-color: transparent;
+    user-select: none;
 }
 
 .new-list-button {
@@ -182,6 +194,7 @@ option {
     font-weight: 300;
     margin: 12px 0 0 70px;
     background-color: transparent;
+    user-select: none;
 }   
 
 .task-element {
@@ -201,6 +214,18 @@ option {
     transition: color 0.3s ease, text-decoration-color 0.3s ease;
 }
 
+.task-detail-elipsis {
+    font-size: 28px;
+    height: 20px;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 12px;
+    color: rgba(63, 63, 55, 0.4);
+    cursor: pointer;
+}
+
 .task-checkbox {
     width: 22px;
     height: 22px;
@@ -208,6 +233,7 @@ option {
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
+    user-select: none;
 }
 
 .task-checkbox:hover, .task-checkbox:focus {
