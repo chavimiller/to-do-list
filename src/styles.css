@@ -129,15 +129,49 @@ option {
     height: 60px;
 }
 
+.list-input-form {
+    display: flex;
+    flex-direction: row;
+    width: 800px;
+    height: 250px;
+    background-color: var(--secondary);
+    border-radius: 12px;
+    position: absolute;
+    
+}
+
+.list-name-input {
+    width: 200px;
+    height: 24px;
+    font-size: 24px;
+    padding: 6px 10px;
+    background-color: var(--primary);    
+    border: none;
+    border-radius: 4px;
+    color: var(--text);
+}
+
+
 .all-lists-container {
     display: flex;
     flex-direction: column;
     height: fit-content;
     width: 260px;
     margin: 20px 0 0 70px;
-    font-size: 24px;
-    font-weight: 300;
     gap: 4px; 
+}
+
+.menu-list-names {
+    font-size: 30px;
+    font-weight: 300;
+}
+
+.plus-button {
+    cursor: pointer;
+    color: var(--accent-green);
+    font-size: 30px;
+    font-weight: 600;
+    background-color: transparent;
 }
 
 .new-list-button {
@@ -146,6 +180,7 @@ option {
     font-size: 25px;
     font-weight: 300;
     margin: 12px 0 0 70px;
+    background-color: transparent;
 }   
 
 .task-element {
@@ -153,6 +188,10 @@ option {
     text-align: center;
     align-items: center;
     gap: 10px;
+}
+
+.priority-symbol {
+    padding-top: 5px;
 }
 
 .task-title {

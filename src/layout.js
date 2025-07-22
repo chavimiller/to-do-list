@@ -2,9 +2,10 @@ import Bookmark from "./Bookmark.svg"
 import LowPriority from './LowPriority.svg'
 import MedPriority from './MedPriority.svg'
 import HighPriority from './HighPriority.svg'
-import { masterList, general, vacation } from "./projectManager";
+import { masterList, general, vacation, addProject } from "./projectManager";
 import { toDoItem } from "./todo";
 import { formatDistance, subDays } from "date-fns";
+import { project } from "./project";
 
 let content;
 let contentGrid;
@@ -18,6 +19,11 @@ let allListsContainer;
 let activeList = general;
 let addList;
 let checkBox;
+const options = [
+            {label: "Low", symbol: "🟢",},
+            {label: "Medium", symbol: "🔵"},
+            {label: "High", symbol: "🔴"}
+        ];
 
 export function layout() {
     content = document.querySelector("#content");
@@ -56,6 +62,10 @@ export function layout() {
     menuSideBar.appendChild(allListsContainer);
 }
 
+export function switchActiveList() {
+    
+}
+
 export function renderActiveListTitle() {
     let activeListTitle = document.createElement("div");
     activeListTitle.classList.add("active-list-title");
@@ -64,26 +74,34 @@ export function renderActiveListTitle() {
 }
 
 export function renderNewListItem(item) {
-    activeList.listItems.map((item, index) => {
+    let showTask = document.createElement("div");
+    showTask.classList.add("task-element");
 
-        let showTask = document.createElement("div");
-        showTask.classList.add("task-element");
+    let taskTitle = document.createElement("div");
+    taskTitle.classList.add("task-title");
+    taskTitle.textContent = item.title;
 
-        let taskTitle = document.createElement("div");
-        taskTitle.classList.add("task-title");
+    let matchedPriority = options.find(option => option.label === item.priority);
 
-        checkBox = document.createElement("div");
-        checkBox.classList.add("task-checkbox");
-        taskTitle.textContent = item.title;
-        
-        if (taskTitle.textContent === "") {
-            return; 
-        } else {
-        taskArea.insertBefore(showTask, taskArea.firstChild);
-        showTask.appendChild(checkBox);
-        showTask.appendChild(taskTitle);
-        }
-    })
+    let taskPriority = document.createElement("div");
+    taskPriority.classList.add("priority-symbol")
+    taskPriority.textContent = matchedPriority ? matchedPriority.symbol : item.priority;
+
+    checkBox = document.createElement("div");
+    checkBox.classList.add("task-checkbox");
+    
+    if (taskTitle.textContent === "") {
+        return; 
+    } else {
+    if (item.project === activeList.listName) {
+    taskArea.insertBefore(showTask, taskArea.firstChild);
+    showTask.appendChild(checkBox);
+    showTask.appendChild(taskTitle);
+    showTask.appendChild(taskPriority)
+    } else {
+        return;
+    }
+    }
 }
 
 export function addNewTask() {
@@ -101,6 +119,7 @@ export function addNewTask() {
         let taskInputTitle = document.createElement("input");
         taskInputTitle.id = 'task-input-title';
         taskInputTitle.placeholder = "Title";
+        taskInputTitle.required = true;
         taskInputForm.appendChild(taskInputTitle);
         
         let taskInputDescr = document.createElement("input");
@@ -116,15 +135,11 @@ export function addNewTask() {
         let taskInputPriority = document.createElement("select");
         taskInputPriority.id = 'task-input-priority';
         taskInputForm.appendChild(taskInputPriority);
-        const options = [
-            {label: "Low", value: "🟢",},
-            {label: "Medium", value: "🔵"},
-            {label: "High", value: "🔴"}
-        ];
+        
         options.map((choice) => {
             let option = document.createElement("option");
             option.value = choice.label;
-            option.textContent = choice.value;
+            option.textContent = choice.symbol;
             taskInputPriority.appendChild(option);
         })
 
@@ -137,9 +152,7 @@ export function addNewTask() {
             option.value = choice.listName;
             option.textContent = choice.listName;
             taskInputAssignList.appendChild(option);
-
         })
-
 
         let taskSubmitButton = document.createElement("button");
         taskSubmitButton.type = "submit";
@@ -151,14 +164,15 @@ export function addNewTask() {
             let makeTask = new toDoItem(taskInputTitle.value, taskInputDescr.value, taskInputDue.value, taskInputPriority.value, taskInputAssignList.value);
             const list = masterList.find((choice) =>
                 choice.listName === taskInputAssignList.value)
-            if (list) {
-                list.addItem(makeTask);
-                renderNewListItem()
-            } else {
-                general.addItem(makeTask);
-                renderNewListItem()
+            if (taskInputTitle.value !== "") {
+                if (list) {
+                    list.addItem(makeTask);
+                    renderNewListItem(makeTask)
+                } else {
+                    general.addItem(makeTask);
+                    renderNewListItem(makeTask)
+                }
             }
-            
             taskInputForm.remove()
         })
     })
@@ -170,7 +184,14 @@ export function showMasterList() {
         addList.textContent = list.listName;
         allListsContainer.appendChild(addList);
     })
-    
+}
+
+export function renderNewAddedList(list) {
+    addList = document.createElement("div");
+    addList.textContent = list.listName;
+    addList.classList.add("menu-list-names");
+    //Fix this next
+    allListsContainer.appendChild(addList);
 }
 
 export function addNewList() {
@@ -178,6 +199,42 @@ export function addNewList() {
     newListButton.classList.add("new-list-button");
     newListButton.textContent = "+ New List";
     menuSideBar.appendChild(newListButton);
+
+    newListButton.addEventListener("click", () => {
+        newListButton.style.display = "none";
+
+        const listInputForm = document.createElement("form");
+        listInputForm.classList.add(".list-input-form");
+
+        const addButton = document.createElement("button")
+        addButton.type = 'submit';
+        addButton.textContent = "+"
+        addButton.classList.add("plus-button")
+
+        const listNameInput = document.createElement("input");
+        listNameInput.id = "list-name-input"
+        listNameInput.classList.add("list-name-input");
+
+        allListsContainer.insertBefore(listInputForm, allListsContainer.firstChild);
+        listInputForm.appendChild(listNameInput);
+        listInputForm.appendChild(addButton);
+
+        addButton.addEventListener("click", (e) => {
+
+            if (listNameInput.value === '') {
+                return;
+            } else {
+            e.preventDefault();
+            newListButton.style.display = "block";
+
+            let makeList = new project(listNameInput.value);
+            addProject(makeList);
+
+            renderNewAddedList(makeList);
+            listInputForm.remove();
+            }
+        })
+    })
 }
 
 /* Toggle not working
