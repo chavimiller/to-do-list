@@ -14,8 +14,6 @@ export function deleteProject(project) {
 export const general = new project("General");
 addProject(general)
 
-export const vacation = new project("Vacation in Vietnam");
-addProject(vacation)
 
 
 

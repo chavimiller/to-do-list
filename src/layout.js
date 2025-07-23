@@ -109,7 +109,7 @@ export function renderNewListItem(item) {
 
     listItemDetail = document.createElement("div");
     listItemDetail.textContent = "...";
-    listItemDetail.classList.add("task-detail-elipsis")
+    listItemDetail.classList.add("task-detail-elipsis");
 
     listItemDetail.addEventListener("click", () => {
        toggleTaskDetail(item, showTask);
@@ -312,6 +312,10 @@ export function showTaskDetail(task, element) {
     deleteTaskButton.classList.add("delete-task-button");
     deleteTaskButton.textContent = "Delete Task";
 
+    deleteTaskButton.addEventListener("click", () => {
+        removeTask(task, element);
+    })
+
     element.appendChild(taskDropDown);
     taskDropDown.append(taskDescr);
     taskDropDown.append(taskDueDate);
@@ -329,4 +333,10 @@ export function toggleTaskDetail(task, parentElement) {
 
 export function formatDateInput(dateInput) {
     return format(new Date(dateInput), 'EEE, MMMM d, yyyy');
+}
+
+export function removeTask(task, taskElement) {
+    const findList = masterList.find(x => x.listName === task.project)
+    findList.deleteItem(task)
+    taskElement.remove()
 }
