@@ -58,7 +58,7 @@
     display: flex;
     padding: 75px 0 75px 150px;
     flex-wrap: wrap;
-    width: 900px;
+    width: fit-content;
 }
 
 .task-area {
@@ -83,6 +83,7 @@
     font-weight: 300;
     margin-left: 150px;
     user-select: none;
+    width: fit-content;
 }
 
 img {
@@ -297,4 +298,26 @@ option {
     border-radius: 4px;
     padding: 1px;
 
+}
+
+.trash-container {
+    position: absolute;
+    top: 100px;
+    right: 120px;
+    transition: transform ease 0.3s;
+    transform-origin: 50% 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.trash-container:focus, .trash-container:hover {
+    transform: scale(1.3);
+}
+
+.trash-img {
+    width: 25px;
+    height: 25px;
 }

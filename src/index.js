@@ -1,5 +1,5 @@
 import "./styles.css";
-import { layout, renderActiveListTitle, switchActiveList, addNewTask, showMasterList, addNewList } from "./layout.js";
+import { layout, renderActiveListTitle, switchActiveList, addNewTask, showMasterList, addNewList, renderDeleteListButton } from "./layout.js";
 import { masterList } from "./projectManager.js";
 
 layout()
@@ -8,5 +8,6 @@ addNewTask()
 showMasterList()
 addNewList()
 switchActiveList()
+
 console.log(masterList)
 

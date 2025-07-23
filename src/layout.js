@@ -1,8 +1,9 @@
 import Bookmark from "./Bookmark.svg"
+import trashButton from "./TrashBin.svg"
 import LowPriority from './LowPriority.svg'
 import MedPriority from './MedPriority.svg'
 import HighPriority from './HighPriority.svg'
-import { masterList, general, vacation, addProject } from "./projectManager";
+import { masterList, general, addProject, deleteProject } from "./projectManager";
 import { toDoItem } from "./todo";
 import { formatDate, formatDistance, subDays } from "date-fns";
 import { project } from "./project";
@@ -14,6 +15,7 @@ let menuSideBar;
 let mainContent;
 let mainHeaderBar;
 let taskArea;
+let trash;
 let bookmarkSVG;
 let menuHeader;
 let listItemDetail;
@@ -62,6 +64,8 @@ export function layout() {
     allListsContainer = document.createElement("div")
     allListsContainer.classList.add("all-lists-container")
     menuSideBar.appendChild(allListsContainer);
+
+    renderDeleteListButton()
 }
 
 export function switchActiveList() {
@@ -149,6 +153,7 @@ export function addNewTask() {
     newTask.classList.add("new-task-button");
     newTask.textContent = "+ New Item";
     mainContent.appendChild(newTask);
+
     newTask.addEventListener("click", () => {
         newTask.style.display = "none";
 
@@ -244,7 +249,6 @@ export function renderNewAddedList(list) {
         activeList.listItems.forEach((item) => {
             renderNewListItem(item);
         })
-
     })
 }
 
@@ -339,4 +343,31 @@ export function removeTask(task, taskElement) {
     const findList = masterList.find(x => x.listName === task.project)
     findList.deleteItem(task)
     taskElement.remove()
+}
+
+export function renderDeleteListButton() {
+    let trashContainer = document.createElement("div");
+    trashContainer.classList.add("trash-container");
+    
+    trash = document.createElement("img");
+    trash.classList.add("trash-img")
+    trash.src = trashButton;
+
+    trashContainer.appendChild(trash);
+    mainContent.appendChild(trashContainer);
+
+    trashContainer.addEventListener("click", () => {
+        if (activeList === general) {
+            alert("You cannot delete the general list")
+        } else {
+        deleteProject(activeList);
+        allListsContainer.innerHTML = '';
+        taskArea.innerHTML = '';
+        mainHeaderBar.innerHTML = '';
+        activeList = general;
+        renderActiveListTitle()
+        showMasterList()
+        switchActiveList()
+        }
+    })
 }
