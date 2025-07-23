@@ -20,7 +20,6 @@ let listItemDetail;
 let allListsContainer;
 let activeList = general;
 let addList;
-let checkBox;
 const options = [
             {label: "Low", symbol: "🟢",},
             {label: "Medium", symbol: "🔵"},
@@ -122,13 +121,13 @@ export function renderNewListItem(item) {
     taskPriority.classList.add("priority-symbol")
     taskPriority.textContent = matchedPriority ? matchedPriority.symbol : item.priority;
 
-    checkBox = document.createElement("div");
+    let checkBox = document.createElement("div");
     checkBox.classList.add("task-checkbox");
     checkBox.addEventListener("click", () => {
-        markCheckBox(checkBox, showTask)
+        item.toggleComplete();
+        markCheckBox(checkBox, taskTitle);
     })
 
-    
     if (taskTitle.textContent === "") {
         return; 
     } else {
