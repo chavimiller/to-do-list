@@ -1,13 +1,11 @@
-import Bookmark from "./Bookmark.svg"
-import trashButton from "./TrashBin.svg"
-import LowPriority from './LowPriority.svg'
-import MedPriority from './MedPriority.svg'
-import HighPriority from './HighPriority.svg'
+import Bookmark from "./images/Bookmark.svg"
+import trashButton from "./images/TrashBin.svg"
 import { masterList, general, addProject, deleteProject } from "./projectManager";
 import { toDoItem } from "./todo";
 import { formatDate, formatDistance, subDays } from "date-fns";
 import { project } from "./project";
 import { format } from "date-fns";
+import { saveToLocalStorage, loadFromLocalStorage } from "./localStorage";
 
 let content;
 let contentGrid;
@@ -20,7 +18,7 @@ let bookmarkSVG;
 let menuHeader;
 let listItemDetail;
 let allListsContainer;
-let activeList = general;
+export let activeList = general;
 let addList;
 const options = [
             {label: "Low", symbol: "🟢",},
@@ -214,9 +212,11 @@ export function addNewTask() {
                 if (list) {
                     list.addItem(makeTask);
                     renderNewListItem(makeTask)
+                    saveToLocalStorage(masterList);
                 } else {
                     general.addItem(makeTask);
                     renderNewListItem(makeTask)
+                    saveToLocalStorage(masterList);
                 }
             }
             taskInputForm.remove()
@@ -343,6 +343,7 @@ export function removeTask(task, taskElement) {
     const findList = masterList.find(x => x.listName === task.project)
     findList.deleteItem(task)
     taskElement.remove()
+    saveToLocalStorage(masterList);
 }
 
 export function renderDeleteListButton() {
