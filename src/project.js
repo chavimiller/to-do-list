@@ -10,17 +10,9 @@ export class project {
         this.listItems.push(task)
     }
 
-    expandItem() {
-
-    }
-    //delete by index instead
     deleteItem(task) {
         this.listItems = this.listItems.filter(x => x !== task)
     } 
-
-    toggleItem() {
-
-    }
 }
 
 
