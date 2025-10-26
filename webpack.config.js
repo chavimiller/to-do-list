@@ -9,6 +9,7 @@ module.exports = {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
     clean: true,
+    publicPath: "./",
   },
   devtool: "eval-source-map",
   devServer: {
@@ -27,7 +28,7 @@ module.exports = {
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        type: 'asset/resource',
+        type: "asset/resource",
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
