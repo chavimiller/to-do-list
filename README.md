@@ -1,1 +1,3 @@
 # to-do-list
+
+This project is a desktop-friendly to-do list application built with vanilla JavaScript, HTML, and CSS. It uses Webpack for bundling and follows a modular file structure to keep functionality organized and maintainable. New tasks and task lists can be created, updated, or deleted, with all data saved to localStorage for persistence between sessions. The app’s interactivity is handled through event listeners, and the interface updates dynamically based on user actions. While this version isn’t fully responsive, it represents an early project focused on building core logic, DOM manipulation, and structured JavaScript organization.
